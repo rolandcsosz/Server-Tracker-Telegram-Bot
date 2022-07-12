@@ -6,10 +6,13 @@ using System.Timers;
 using ConsoleTables;
 using Serilog;
 
+// Main service which affects the tracked processes and the messages 
 internal class Runner
 {
-    private System.Timers.Timer timer;
-    TelegramMessenger messenger;
+    System.Timers.Timer timer;
+
+    TelegramMessanger messenger;
+
     ServiceChecker serviceChecker;
 
 
@@ -26,7 +29,7 @@ internal class Runner
         timer.Elapsed += TimerElapsed;
 
         // init the message sender and the service checker
-        messenger = new TelegramMessenger();
+        messenger = new TelegramMessanger();
         serviceChecker = new ServiceChecker();
 
 
@@ -44,12 +47,14 @@ internal class Runner
 
     }
 
+    // set refresh intervall
     void SetInterval(int seconds)
     {
         timer.Interval = seconds * 1000;
         Log.Information($"Service checking intervall was set to: {seconds}sec");
     }
 
+    //list and send to the user all possible commands the bot can interpret
     void listCommands()
     {
         String helpText = "Start - The bot start to monitor the tracked services\n\n" +
@@ -64,6 +69,7 @@ internal class Runner
 
     }
 
+    //list and send to the user all the tracked processes and their statuses
     void listAllServices()
     {
 
@@ -79,6 +85,8 @@ internal class Runner
 
     }
 
+    //Help to build the reply messages, it takes the caption and the list of the services affected
+    //If the list is empty it return an empty string ("")
     String BuildMessage(String caption, List<ServiceInfo> infos)
     {
         var table = new ConsoleTable("Name", "Status");
@@ -108,7 +116,7 @@ internal class Runner
 
     }
 
-
+    //It sets the running of the main service after a message request
     void SetRunning(bool shouldRun)
     {
         if (shouldRun)
@@ -120,7 +128,8 @@ internal class Runner
         Stop();
     }
 
-    private void TimerElapsed(object? sender, ElapsedEventArgs e)
+    //It runs every time the main timer is elapsed, it checks if there are any changes from the last check
+    void TimerElapsed(object? sender, ElapsedEventArgs e)
     {
         String message = BuildMessage("Change(s) occured in the running of the following service(s)", serviceChecker.CheckChangedServices());
         if (!message.Equals(""))
@@ -130,7 +139,7 @@ internal class Runner
 
 
 
-
+    //Starts the monitoring by starting the timer 
     public void Start()
     {
         Log.Information("Service monitoring is started.");
@@ -138,6 +147,7 @@ internal class Runner
         timer.Start();
     }
 
+    //Stops the monitoring by stopping the timer 
     public void Stop()
     {
         Log.Information("Service monitoring is stopped.");

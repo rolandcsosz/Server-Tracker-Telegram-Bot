@@ -2,12 +2,12 @@
 using Serilog;
 using Topshelf;
 
-
+// logging into => log.txt
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("log.txt")
     .CreateLogger();
 
-
+// service configuration and running
 var exitCode = HostFactory.Run(x =>
 {
 
@@ -19,6 +19,7 @@ var exitCode = HostFactory.Run(x =>
 
     });
 
+    // service informations
     x.RunAsLocalService();
     x.SetServiceName("ServiceMonitor");
     x.SetDisplayName("ServiceMonitor");
@@ -26,6 +27,8 @@ var exitCode = HostFactory.Run(x =>
 
 });
 
+
+//exit of the running
 int exitCodeValue = (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());
 Environment.ExitCode = exitCodeValue;
 

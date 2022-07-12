@@ -1,6 +1,6 @@
 ﻿using System.ServiceProcess;
 
-
+//It represents the information about a tracked process
 public class ServiceInfo
 {
     public String Name { get; set; }

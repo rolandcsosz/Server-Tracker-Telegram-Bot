@@ -6,8 +6,8 @@ using Telegram.Bot.Types.Enums;
 using Serilog;
 using ServiceTrackerTelegramBot;
 
-
-internal class TelegramMessenger
+//This is responsible for the Telegram message sending and receiving 
+internal class TelegramMessanger
 {
     String TELEGRAM_TOKEN = EnvironmentVariables.TELEGRAM_TOKEN;
 
@@ -29,8 +29,9 @@ internal class TelegramMessenger
 
     bool shouldSendMessages = true;
 
-    public TelegramMessenger()
+    public TelegramMessanger()
     {
+        //Init bot client
         botClient = new TelegramBotClient(TELEGRAM_TOKEN);
         cts = new CancellationTokenSource();
         receiverOptions = new ReceiverOptions
@@ -43,6 +44,7 @@ internal class TelegramMessenger
 
     }
 
+    //Start receiving the messages
     public void StartReceiving()
     {
         Log.Information("Message receiving is started.");
@@ -55,7 +57,7 @@ internal class TelegramMessenger
 
     }
 
-
+    //Stop receiving the messages
     public void StopReceiving()
     {
         Log.Information("Message receiving is stopped.");
@@ -63,6 +65,7 @@ internal class TelegramMessenger
 
     }
 
+    //Handle any async message update
     async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         // Only process Message updates: https://core.telegram.org/bots/api#message
@@ -73,6 +76,8 @@ internal class TelegramMessenger
             return;
 
         Log.Information($"Message '{messageText}' is received.");
+
+        //with the different messages different events are invoked ->
 
         if (messageText.Equals("Start"))
         {
@@ -144,6 +149,7 @@ internal class TelegramMessenger
 
     }
 
+    //Send an async message back
     public async void sendMessageAsync(String textMessage)
     {
         Message message = await botClient.SendTextMessageAsync(
@@ -155,6 +161,7 @@ internal class TelegramMessenger
 
     }
 
+    //Handle any API or connection issue
     Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
     {
         var ErrorMessage = exception switch
