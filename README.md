@@ -1,5 +1,5 @@
 # Server Monitoring Telegram Bot
-**A self-hosted service application to inform the user via Telegram API about status changes of process or running services on a home server.**
+**A self-hosted .NET based service application to inform the user via Telegram API about status changes of process or running services on a home server.**
 
 ## Features
 
