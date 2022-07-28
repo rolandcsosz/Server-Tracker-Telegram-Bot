@@ -69,7 +69,7 @@ dotnet run
 
 ##  Copyright & License
 
-- Copyright (©) 2022 by [Csősz Roalnd](https://github.com/rolandcsosz)
+- Copyright (©) 2022 by [Csősz Roland](https://github.com/rolandcsosz)
 
 - Licensed under the terms of the [GNU GENERAL PUBLIC LICENSE Version 2, June 1991](./LICENSE)
 
